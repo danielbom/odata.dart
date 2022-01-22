@@ -1,8 +1,8 @@
 # OData Client
 
-A client to make OData requests.
-
-This library has the intension to make easy and more learnable the process to use odata resources from backend.
+This library is intended to make the process of learning and using odata resources easier.
+It's an abstraction of a client to make OData requests.
+Therefore, it can be used in front-end, back-end and mobile applications.
 
 **OBS**: This library is under construction, so it has several ways to request odata resources.
 
