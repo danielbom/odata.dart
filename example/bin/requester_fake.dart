@@ -17,7 +17,7 @@ class RequesterFaker implements ODataRequester {
     if (params.isNotEmpty) {
       params = '?$params';
     }
-  
+
     return RequestResultBase(
         url: baseUrl + url + params,
         data: jsonEncode(const {

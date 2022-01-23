@@ -214,7 +214,8 @@ class Sum extends FieldAggregate {
 }
 
 class CountDistinct extends FieldAggregate {
-  const CountDistinct(String field, String asName) : super(field, 'countdistinct', asName);
+  const CountDistinct(String field, String asName)
+      : super(field, 'countdistinct', asName);
 }
 
 class Max1 extends Max {
@@ -369,7 +370,7 @@ class SubString extends Operation {
   }
 }
 
-class Year  extends Operation {
+class Year extends Operation {
   final String field;
 
   const Year(this.field);
@@ -444,7 +445,7 @@ class Params {
       this.count,
       this.skip,
       this.top});
-  
+
   @override
   String toString() {
     return buildParams('&', this);
@@ -455,8 +456,14 @@ String buildParams(String separator, Params options) {
   final params = <String>[];
   final selects = [...options.select1, ...options.select.map(internalToString)];
   final expands = [...options.expand1, ...options.expand.map(internalToString)];
-  final orderbys = [...options.orderby1, ...options.orderby.map(internalToString)];
-  final computes = [...options.compute1, ...options.compute.map(internalToString)];
+  final orderbys = [
+    ...options.orderby1,
+    ...options.orderby.map(internalToString)
+  ];
+  final computes = [
+    ...options.compute1,
+    ...options.compute.map(internalToString)
+  ];
 
   if (options.count == true) params.add('\$count=true');
   if (options.skip != null) params.add('\$skip=${options.skip}');

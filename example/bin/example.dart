@@ -14,7 +14,8 @@ Future visualExample(
     RequestOptions? options,
     Params? params,
     String? params1}) async {
-  final response = await manager.figure.list(options: options, params: params, params1: params1);
+  final response = await manager.figure
+      .list(options: options, params: params, params1: params1);
   print('');
   print(response.url);
 }
