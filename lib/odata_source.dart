@@ -105,11 +105,7 @@ class ODataSource {
   }
 
   RequestOData<T> _mapODataResultDefault<T>(RequestResult request) {
-    return RequestResultBase(
-        error: request.error,
-        statusCode: request.statusCode,
-        url: request.url,
-        data: ODataResult<T>(context: '', data: request.data));
+    return request.map((data) => ODataResult(context: '', data: data));
   }
 
   RequestOData<T> _mapODataResult<T>(
@@ -119,19 +115,16 @@ class ODataSource {
     }
 
     try {
-      final data = request.data!;
-      final Map<String, dynamic> decodedData = jsonDecode(data);
-      return RequestResultBase(
-          error: request.error,
-          statusCode: request.statusCode,
-          url: request.url,
-          data: ODataResult<T>(
-            context: decodedData[ODATA_CONTEXT],
-            value: mapper(decodedData),
-            count: decodedData[ODATA_COUNT],
-            keys: decodedData[ODATA_KEYS] ?? const [],
-            properties: decodedData[ODATA_PROPERTIES] ?? const {},
-          ));
+      return request.map((data) {
+        final Map<String, dynamic> decodedData = jsonDecode(data!);
+        return ODataResult(
+          context: decodedData[ODATA_CONTEXT],
+          value: mapper(decodedData),
+          count: decodedData[ODATA_COUNT],
+          keys: decodedData[ODATA_KEYS] ?? const [],
+          properties: decodedData[ODATA_PROPERTIES] ?? const {},
+        );
+      });
     } catch (error) {
       rethrow;
     } finally {

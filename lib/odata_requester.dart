@@ -22,6 +22,15 @@ class RequestResultBase<T> {
   final String? url;
 
   const RequestResultBase({this.data, this.error, this.statusCode, this.url});
+
+  RequestResultBase<K> map<K>(K Function(T? data) mapper) {
+    return RequestResultBase(
+      error: error,
+      statusCode: statusCode,
+      url: url,
+      data: mapper(data),
+    );
+  }
 }
 
 typedef RequestResult = RequestResultBase<String>;
