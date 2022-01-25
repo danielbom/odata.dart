@@ -103,32 +103,22 @@ class ODataSource {
     return _mapODataResult(mapper, result);
   }
 
-  RequestOData<T> _mapODataResultDefault<T>(RequestResult request) {
-    return request.map((data) => ODataResult(context: '', data: data));
-  }
-
   RequestOData<T> _mapODataResult<T>(
       ODataMapper<T>? mapper, RequestResult request) {
     if (mapper == null) {
-      return _mapODataResultDefault(request);
+      return request.map((data) => ODataResult(context: '', data: data));
     }
 
-    try {
-      return request.map((data) {
-        final Map<String, dynamic> decodedData = jsonDecode(data!);
-        return ODataResult(
-          context: decodedData[ODATA_CONTEXT],
-          value: mapper(decodedData),
-          count: decodedData[ODATA_COUNT],
-          keys: decodedData[ODATA_KEYS] ?? const [],
-          properties: decodedData[ODATA_PROPERTIES] ?? const {},
-        );
-      });
-    } catch (error) {
-      rethrow;
-    } finally {
-      return _mapODataResultDefault(request);
-    }
+    return request.map((data) {
+      final Map<String, dynamic> decodedData = jsonDecode(data!);
+      return ODataResult(
+        context: decodedData[ODATA_CONTEXT],
+        value: mapper(decodedData),
+        count: decodedData[ODATA_COUNT],
+        keys: decodedData[ODATA_KEYS] ?? const [],
+        properties: decodedData[ODATA_PROPERTIES] ?? const {},
+      );
+    });
   }
 
   String _makeUrl({String id = '', Params? params, String? params1}) {
