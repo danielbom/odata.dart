@@ -51,7 +51,7 @@ class ODataSource {
       RequestOptions? options,
       Params? params,
       String? params1}) async {
-    final url = '$odataPrefix/$entity${params1 ?? ''}${_processParams(params)}';
+    final url = _makeUrl(params1: params1, params: params);
     final request = await requester.httpGet(url, options);
     return _mapODataResult(mapper, request);
   }
@@ -61,8 +61,7 @@ class ODataSource {
       RequestOptions? options,
       Params? params,
       String? params1}) async {
-    final url =
-        '$odataPrefix/$entity($id)${params1 ?? ''}${_processParams(params)}';
+    final url = _makeUrl(id: id, params1: params1, params: params);
     final result = await requester.httpGet(url, options);
     return _mapODataResult(mapper, result);
   }
@@ -72,35 +71,35 @@ class ODataSource {
       RequestOptions? options,
       Params? params,
       String? params1}) async {
-    final url = '$odataPrefix/$entity${params1 ?? ''}${_processParams(params)}';
+    final url = _makeUrl(params1: params1, params: params);
     final result = await requester.httpPost(url, data, options);
     return _mapODataResult(mapper, result);
   }
 
-  Future<RequestOData<T>> update<D, T>(D data,
+  Future<RequestOData<T>> update<D, T>(String id, D data,
       {ODataMapper<T>? mapper,
       RequestOptions? options,
       Params? params,
       String? params1}) async {
-    final url = '$odataPrefix/$entity${params1 ?? ''}${_processParams(params)}';
+    final url = _makeUrl(id: id, params1: params1, params: params);
     final result = await requester.httpPatch(url, data, options);
     return _mapODataResult(mapper, result);
   }
 
-  Future<RequestOData<T>> replace<D, T>(D data,
+  Future<RequestOData<T>> replace<D, T>(String id, D data,
       {ODataMapper<T>? mapper,
       RequestOptions? options,
       Params? params,
       String? params1}) async {
-    final url = '$odataPrefix/$entity${params1 ?? ''}${_processParams(params)}';
+    final url = _makeUrl(id: id, params1: params1, params: params);
     final result = await requester.httpPut(url, data, options);
     return _mapODataResult(mapper, result);
   }
 
   Future<RequestOData<T>> delete<T>(String id,
       {ODataMapper<T>? mapper, RequestOptions? options}) async {
-    final url = '$odataPrefix/$entity($id)';
-    final result = await requester.httpDelete(url);
+    final url = _makeUrl(id: id);
+    final result = await requester.httpDelete(url, options);
     return _mapODataResult(mapper, result);
   }
 
@@ -130,6 +129,11 @@ class ODataSource {
     } finally {
       return _mapODataResultDefault(request);
     }
+  }
+
+  String _makeUrl({String id = '', Params? params, String? params1}) {
+    if (id.isNotEmpty) id = '($id)';
+    return '$odataPrefix/$entity$id${params1 ?? ""}${_processParams(params)}';
   }
 
   String _processParams(Params? params) {
