@@ -20,7 +20,7 @@ class RequesterFaker implements ODataRequester {
 
     return RequestResultBase(
         url: baseUrl + url + params,
-        data: jsonEncode(const {
+        value: jsonEncode(const {
           '@odata.context': 'fake_context',
           'value': [
             {'Id': '1', 'Width': 100, 'Height': 31, 'Sides': [], 'Parent': {}},
