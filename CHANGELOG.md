@@ -1,3 +1,8 @@
+## 1.0.4
+
+- Encode data on POST, PUT, PATCH requests.
+- Add page parameter to simplify 'skip' and 'top' parameters.
+
 ## 1.0.3
 
 - Undo RequestResult.value to data.
