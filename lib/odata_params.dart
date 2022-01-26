@@ -415,6 +415,20 @@ class Select {
   }
 }
 
+class Page {
+  final int number;
+  final int size;
+
+  const Page(this.number, {this.size = 20});
+
+  @override
+  String toString() {
+    var skip = number * size;
+    var top = skip + size;
+    return '\$skip=$skip&\&top=$top';
+  }
+}
+
 // https://docs.microsoft.com/pt-br/azure/devops/report/extend-analytics/odata-supported-features?view=azure-devops
 class Params {
   final List<String> select1;
@@ -430,6 +444,7 @@ class Params {
   final bool? count;
   final int? skip;
   final int? top;
+  final Page? page;
 
   const Params(
       {this.select1 = const [],
@@ -444,7 +459,8 @@ class Params {
       this.apply,
       this.count,
       this.skip,
-      this.top});
+      this.top,
+      this.page});
 
   @override
   String toString() {
@@ -466,8 +482,14 @@ String buildParams(String separator, Params options) {
   ];
 
   if (options.count == true) params.add('\$count=true');
-  if (options.skip != null) params.add('\$skip=${options.skip}');
-  if (options.top != null) params.add('\$top=${options.top}');
+
+  if (options.page != null) {
+    params.add(options.page.toString());
+  } else {
+    if (options.skip != null) params.add('\$skip=${options.skip}');
+    if (options.top != null) params.add('\$top=${options.top}');
+  }
+
   if (options.apply != null) params.add('\$apply=${options.apply}');
   if (options.filter != null) params.add('\$filter=${options.filter}');
   if (computes.isNotEmpty) params.add('\$compute=${computes.join(',')}');
