@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:odata/odata_requester.dart';
 import 'package:http/http.dart' as http;
 
 class ODataHttpRequester extends ODataRequester {
   final String baseUrl;
   final Map<String, String> headers;
+  final JsonEncoder encoder = JsonEncoder();
 
   ODataHttpRequester({
     required this.baseUrl,
@@ -23,7 +26,8 @@ class ODataHttpRequester extends ODataRequester {
       [RequestOptions? options]) async {
     final headers = _makeHeaders(options);
     final completeUrl = _makeUrl(url, options);
-    final response = await http.post(Uri.parse(completeUrl), headers: headers, body: data);
+    final body = toJson(data);
+    final response = await http.post(Uri.parse(completeUrl), headers: headers, body: body);
     return _mapResponse(completeUrl, response);
   }
 
@@ -32,7 +36,8 @@ class ODataHttpRequester extends ODataRequester {
       [RequestOptions? options]) async {
     final headers = _makeHeaders(options);
     final completeUrl = _makeUrl(url, options);
-    final response = await http.patch(Uri.parse(completeUrl), headers: headers, body: data);
+    final body = toJson(data);
+    final response = await http.patch(Uri.parse(completeUrl), headers: headers, body: body);
     return _mapResponse(completeUrl, response);
   }
 
@@ -41,7 +46,8 @@ class ODataHttpRequester extends ODataRequester {
       [RequestOptions? options]) async {
     final headers = _makeHeaders(options);
     final completeUrl = _makeUrl(url, options);
-    final response = await http.put(Uri.parse(completeUrl), headers: headers, body: data);
+    final body = toJson(data);
+    final response = await http.put(Uri.parse(url), headers: headers, body: body);
     return _mapResponse(completeUrl, response);
   }
 
@@ -60,9 +66,15 @@ class ODataHttpRequester extends ODataRequester {
     throw UnimplementedError();
   }
 
+  String toJson(dynamic data) {
+    return encoder.convert(data);
+  }
+
   Map<String, String> _makeHeaders(RequestOptions? options) {
-    final headers = Map<String, String>.from(this.headers)
-      ..addAll(options?.headers ?? const {});
+    final headers = { 'Content-Type': 'application/json' }
+      ..addAll(this.headers)
+      ..addAll(options?.headers ?? {});
+    
     return headers;
   }
 
