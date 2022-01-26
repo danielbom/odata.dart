@@ -16,19 +16,19 @@ class RequestOptions {
 }
 
 class RequestResultBase<T> {
-  final T? value;
+  final T? data;
   final Error? error;
   final int? statusCode;
   final String? url;
 
-  const RequestResultBase({this.value, this.error, this.statusCode, this.url});
+  const RequestResultBase({this.data, this.error, this.statusCode, this.url});
 
   RequestResultBase<K> map<K>(K Function(T? data) mapper) {
     return RequestResultBase(
       error: error,
       statusCode: statusCode,
       url: url,
-      value: mapper(value),
+      data: mapper(data),
     );
   }
 }

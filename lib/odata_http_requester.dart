@@ -84,7 +84,7 @@ class ODataHttpRequester extends ODataRequester {
     return RequestResultBase(
       url: url,
       statusCode: response.statusCode,
-      value: response.body,
+      data: response.body,
     );
   }
 }
