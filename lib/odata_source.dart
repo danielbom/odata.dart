@@ -16,7 +16,7 @@ class ODataResult<T> {
   final Map<String, String> properties;
   final int? count;
   final T? value;
-  final String? data;
+  final String? raw;
 
   const ODataResult({
     required this.context,
@@ -24,7 +24,7 @@ class ODataResult<T> {
     this.keys = const [],
     this.properties = const {},
     this.count,
-    this.data,
+    this.raw,
   });
 }
 
@@ -106,7 +106,7 @@ class ODataSource {
   RequestOData<T> _mapODataResult<T>(
       ODataMapper<T>? mapper, RequestResult request) {
     if (mapper == null) {
-      return request.map((data) => ODataResult(context: '', data: data));
+      return request.map((data) => ODataResult(context: '', raw: data));
     }
 
     return request.map((data) {
