@@ -1,3 +1,8 @@
+## 1.0.3
+
+- Undo RequestResult.value to data.
+- Rename ODataResult.data to raw.
+
 ## 1.0.2
 
 - Rename RequestResult.data to value.
