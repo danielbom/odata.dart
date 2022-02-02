@@ -425,7 +425,7 @@ class Page {
   String toString() {
     var skip = number * size;
     var top = skip + size;
-    return '\$skip=$skip&\&top=$top';
+    return '\$count=true&\$skip=$skip&\&top=$top';
   }
 }
 
@@ -481,11 +481,10 @@ String buildParams(String separator, Params options) {
     ...options.compute.map(internalToString)
   ];
 
-  if (options.count == true) params.add('\$count=true');
-
   if (options.page != null) {
     params.add(options.page.toString());
   } else {
+    if (options.count == true) params.add('\$count=true');
     if (options.skip != null) params.add('\$skip=${options.skip}');
     if (options.top != null) params.add('\$top=${options.top}');
   }
