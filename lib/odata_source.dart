@@ -2,33 +2,11 @@ library odata;
 
 import 'dart:convert';
 
+import 'odata_result.dart';
 import 'odata_requester.dart';
 import 'odata_params.dart';
 
-typedef ODataResultOne = Map<String, dynamic>;
 typedef ODataMapper<T> = T Function(Map<String, dynamic>);
-
-typedef ODataRawResult = Map<String, dynamic>;
-
-class ODataResult<T> {
-  final List<String> keys;
-  final String context;
-  final Map<String, String> properties;
-  final int? count;
-  final T? value;
-  final String? raw;
-
-  const ODataResult({
-    required this.context,
-    this.value,
-    this.keys = const [],
-    this.properties = const {},
-    this.count,
-    this.raw,
-  });
-}
-
-typedef RequestOData<T> = RequestResultBase<ODataResult<T>>;
 
 const ODATA_COUNT = '@odata.count';
 const ODATA_CONTEXT = '@odata.context';
@@ -96,11 +74,11 @@ class ODataSource {
     return _mapODataResult(mapper, result);
   }
 
-  Future<RequestOData<T>> delete<T>(String id,
-      {ODataMapper<T>? mapper, RequestOptions? options}) async {
+  Future<RequestOData<dynamic>> delete<T>(String id,
+      {RequestOptions? options}) async {
     final url = _makeUrl(id: id);
     final result = await requester.httpDelete(url, options);
-    return _mapODataResult(mapper, result);
+    return _mapODataResult(null, result);
   }
 
   RequestOData<T> _mapODataResult<T>(
@@ -130,11 +108,11 @@ class ODataSource {
     return params != null ? '?$params' : '';
   }
 
-  static List<ODataRawResult> getValueAsList(ODataRawResult data) {
+  static List<Map<String, dynamic>> getValueAsList(Map<String, dynamic> data) {
     return List.from(data[ODATA_VALUE]);
   }
 
-  static ODataRawResult getValueAsMap(ODataRawResult data) {
+  static Map<String, dynamic> getValueAsMap(Map<String, dynamic> data) {
     return Map.from(data[ODATA_VALUE]);
   }
 }

@@ -5,7 +5,7 @@ import 'models/figure.dart';
 import 'odata_manager.dart';
 import 'requester_fake.dart';
 
-List<Figure> figureMapper(ODataRawResult data) {
+List<Figure> figureMapper(Map<String, dynamic> data) {
   return Figure.fromMany(ODataSource.getValueAsList(data))!;
 }
 
