@@ -1,3 +1,9 @@
+## 1.0.5
+
+- Add count to page parameter.
+- Create odata.dart to export packages.
+- Create ODataSourceMapped
+
 ## 1.0.4
 
 - Encode data on POST, PUT, PATCH requests.
