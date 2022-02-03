@@ -1,6 +1,4 @@
-import 'package:odata/odata_params.dart';
-import 'package:odata/odata_requester.dart';
-import 'package:odata/odata_source.dart';
+import 'package:odata/odata.dart';
 import 'models/figure.dart';
 import 'odata_manager.dart';
 import 'requester_fake.dart';

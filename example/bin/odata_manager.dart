@@ -1,5 +1,4 @@
-import 'package:odata/odata_requester.dart';
-import 'package:odata/odata_source.dart';
+import 'package:odata/odata.dart';
 
 class ODataManager {
   ODataRequester requester;
