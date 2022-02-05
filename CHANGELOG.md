@@ -1,3 +1,12 @@
+## 1.1.0
+
+- Improve make url building
+- Create and fail with ODataException
+- Rename ODataMapper to ODataMap
+- Rename ODataSourceMapper to ODataMapper
+- Move RequesterFake to test, preparing to test ODataSource
+- Update examples
+
 ## 1.0.5
 
 - Add count to page parameter.
