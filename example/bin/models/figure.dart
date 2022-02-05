@@ -5,6 +5,7 @@ class Figure {
   int width;
   int height;
   List<Side> sides;
+  Figure? parent;
   Map<String, dynamic> dyn;
 
   Figure({
@@ -13,6 +14,7 @@ class Figure {
     required this.height,
     required this.dyn,
     required this.sides,
+    required this.parent
   });
 
   factory Figure.fromMap(Map<String, dynamic> data) {
@@ -20,13 +22,15 @@ class Figure {
       ..remove('Id')
       ..remove('Width')
       ..remove('Height')
-      ..remove('Sides');
+      ..remove('Sides')
+      ..remove('Parent');
 
     return Figure(
         id: data['Id'],
         width: data['Width'],
         height: data['Height'],
         sides: data['Sides'] != null ? Side.fromMany(List.from(data['Sides'])) : const [],
+        parent: data['Parent'] != null ? Figure.fromMap(Map.from(data['Parent'])) : null,
         dyn: dyn);
   }
 
@@ -36,6 +40,6 @@ class Figure {
 
   @override
   String toString() {
-    return 'Figure(id=$id, width=$width, height=$height, sides=$sides)';
+    return 'Figure(id=$id, width=$width, height=$height, sides=$sides, parent=$parent)';
   }
 }

@@ -1,6 +1,6 @@
-import 'data_visual_test.dart';
-import 'exception_visual_test.dart';
-import 'url_visual_test.dart';
+import 'visual_examples_data.dart';
+import 'visual_examples_exception.dart';
+import 'visual_examples_url.dart';
 
 void main(List<String> args) async {
   await urlVisualExamples();

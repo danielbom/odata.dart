@@ -16,7 +16,7 @@ Future dataVisualExample() async {
           {'Id': '1', 'Length': 10}
         ],
         'Parent': {
-          'Id': 2,
+          'Id': '2',
           'Width': 48,
           'Height': 21,
           'Sides': null,
