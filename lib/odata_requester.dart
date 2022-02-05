@@ -36,6 +36,8 @@ class RequestResultBase<T> {
 typedef RequestResult = RequestResultBase<String>;
 
 abstract class ODataRequester {
+  const ODataRequester();
+
   Future<RequestResult> httpOptions(String url, [RequestOptions? options]);
   Future<RequestResult> httpGet(String url, [RequestOptions? options]);
   Future<RequestResult> httpPost<T>(String url, T data,

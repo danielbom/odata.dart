@@ -3,16 +3,11 @@ library odata;
 import 'dart:convert';
 
 import 'odata_result.dart';
+import 'odata_exception.dart';
 import 'odata_requester.dart';
 import 'odata_params.dart';
 
 typedef ODataMapper<T> = T Function(Map<String, dynamic>);
-
-const ODATA_COUNT = '@odata.count';
-const ODATA_CONTEXT = '@odata.context';
-const ODATA_VALUE = 'value';
-const ODATA_KEYS = 'keys';
-const ODATA_PROPERTIES = 'properties';
 
 class ODataSource {
   final String odataPrefix;
@@ -83,19 +78,15 @@ class ODataSource {
 
   RequestOData<T> _mapODataResult<T>(
       ODataMapper<T>? mapper, RequestResult request) {
-    if (mapper == null) {
-      return request.map((data) => ODataResult(context: '', raw: data));
-    }
-
     return request.map((data) {
       final Map<String, dynamic> decodedData = jsonDecode(data!);
-      return ODataResult(
-        context: decodedData[ODATA_CONTEXT],
-        value: mapper(decodedData),
-        count: decodedData[ODATA_COUNT],
-        keys: decodedData[ODATA_KEYS] ?? const [],
-        properties: decodedData[ODATA_PROPERTIES] ?? const {},
-      );
+      if (ODataResult.isError(decodedData)) {
+        throw ODataException.fromJson(decodedData);
+      } else if (mapper != null) {
+        return ODataResult.mapped(decodedData, mapper);
+      } else {
+        return ODataResult.raw(decodedData);
+      }
     });
   }
 

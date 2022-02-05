@@ -6,6 +6,8 @@ import 'odata_source.dart';
 import 'odata_params.dart';
 
 abstract class ODataSourceMapper<T> {
+  const ODataSourceMapper();
+
   T mapOne(Map<String, dynamic> data);
   List<T> mapMany(List<Map<String, dynamic>> data);
 }
@@ -14,7 +16,7 @@ class ODataSourceMapped<T> {
   final ODataSource source;
   final ODataSourceMapper<T> mapper;
 
-  const ODataSourceMapped({required this.source, required this.mapper});
+  const ODataSourceMapped(this.source, this.mapper);
 
   factory ODataSourceMapped.create(
       {required ODataRequester requester,
@@ -22,9 +24,9 @@ class ODataSourceMapped<T> {
       required ODataSourceMapper<T> mapper,
       String odataPrefix = '/odata.v1'}) {
     return ODataSourceMapped(
-        source: ODataSource(
+        ODataSource(
             entity: entity, requester: requester, odataPrefix: odataPrefix),
-        mapper: mapper);
+        mapper);
   }
 
   Future<RequestOData<List<T>>> list(

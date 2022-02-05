@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 class ODataHttpRequester extends ODataRequester {
   final String baseUrl;
   final Map<String, String> headers;
-  final JsonEncoder encoder = JsonEncoder();
+  final JsonEncoder encoder = const JsonEncoder();
 
-  ODataHttpRequester({
+  const ODataHttpRequester({
     required this.baseUrl,
     this.headers = const {},
   });
