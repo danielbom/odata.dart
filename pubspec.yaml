@@ -1,7 +1,7 @@
 name: odata
 description: >
   This library is an abstraction of a client to make OData requests, intended to make the process of learning and using OData resources easier.
-version: 1.1.0
+version: 1.1.1
 homepage: https://github.com/danielbom/odata.dart
 
 environment:

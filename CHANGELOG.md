@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Add a better format to ODataException
+
 ## 1.1.0
 
 - Improve make url building
