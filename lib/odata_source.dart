@@ -49,31 +49,24 @@ class ODataSource {
     return _mapODataResult(mapper, result);
   }
 
-  Future<RequestOData<T>> update<D, T>(String id, D data,
-      {ODataMapper<T>? mapper,
-      RequestOptions? options,
-      Params? params,
-      String? params1}) async {
-    final url = _makeUrl(id: id, params1: params1, params: params);
-    final result = await requester.httpPatch(url, data, options);
-    return _mapODataResult(mapper, result);
-  }
-
-  Future<RequestOData<T>> replace<D, T>(String id, D data,
-      {ODataMapper<T>? mapper,
-      RequestOptions? options,
-      Params? params,
-      String? params1}) async {
-    final url = _makeUrl(id: id, params1: params1, params: params);
-    final result = await requester.httpPut(url, data, options);
-    return _mapODataResult(mapper, result);
-  }
-
-  Future<RequestOData<dynamic>> delete<T>(String id,
+  Future<RequestOData> update<D>(String id, D data,
       {RequestOptions? options}) async {
-    final url = _makeUrl(id: id);
+    final url = _makeUrl1(id);
+    final result = await requester.httpPatch(url, data, options);
+    return _mapODataResult1(result);
+  }
+
+  Future<RequestOData> replace<D>(String id, D data,
+      {RequestOptions? options}) async {
+    final url = _makeUrl1(id);
+    final result = await requester.httpPut(url, data, options);
+    return _mapODataResult1(result);
+  }
+
+  Future<RequestOData> delete(String id, {RequestOptions? options}) async {
+    final url = _makeUrl1(id);
     final result = await requester.httpDelete(url, options);
-    return _mapODataResult(null, result);
+    return _mapODataResult1(result);
   }
 
   RequestOData<T> _mapODataResult<T>(
@@ -90,6 +83,17 @@ class ODataSource {
     });
   }
 
+  RequestOData<T> _mapODataResult1<T>(RequestResult request) {
+    return request.map((data) {
+      final Map<String, dynamic> decodedData = jsonDecode(data!);
+      if (ODataResult.isError(decodedData)) {
+        throw ODataException.fromJson(decodedData);
+      } else {
+        return ODataResult.raw(decodedData);
+      }
+    });
+  }
+
   String _makeUrl({String id = '', Params? params, String? params1}) {
     if (id.isNotEmpty) id = '($id)';
     var params2 = params1 ?? '';
@@ -97,6 +101,10 @@ class ODataSource {
     var querySep = params2.isNotEmpty || params3.isNotEmpty ? '?' : '';
     var paramsSep = params2.isNotEmpty && params3.isNotEmpty ? '&' : '';
     return '$odataPrefix/$entity$id$querySep$params2$paramsSep$params3}';
+  }
+
+  String _makeUrl1(String id) {
+    return '$odataPrefix/$entity($id)';
   }
 
   static List<Map<String, dynamic>> getValueAsList(Map<String, dynamic> data) {

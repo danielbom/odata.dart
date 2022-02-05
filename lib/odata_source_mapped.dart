@@ -38,7 +38,7 @@ class ODataSourceMapped<T> {
   Future<RequestOData<T>> getById(String id,
       {RequestOptions? options, Params? params, String? params1}) async {
     return source.getById(id,
-        options: options, params: params, params1: params1, mapper: mapOne);
+        options: options, params: params, params1: params1, mapper: mapOne1);
   }
 
   Future<RequestOData<T>> create<D>(D data,
@@ -47,20 +47,17 @@ class ODataSourceMapped<T> {
         options: options, params: params, params1: params1, mapper: mapOne1);
   }
 
-  Future<RequestOData<T>> update<D>(String id, D data,
-      {RequestOptions? options, Params? params, String? params1}) async {
-    return source.update(id, data,
-        options: options, params: params, params1: params1, mapper: mapOne1);
-  }
-
-  Future<RequestOData<T>> replace<D>(String id, D data,
-      {RequestOptions? options, Params? params, String? params1}) async {
-    return source.replace(id, data,
-        options: options, params: params, params1: params1);
-  }
-
-  Future<RequestOData<dynamic>> delete<T>(String id,
+  Future<RequestOData> update<D>(String id, D data,
       {RequestOptions? options}) async {
+    return source.update(id, data, options: options);
+  }
+
+  Future<RequestOData> replace<D>(String id, D data,
+      {RequestOptions? options}) async {
+    return source.replace(id, data, options: options);
+  }
+
+  Future<RequestOData> delete(String id, {RequestOptions? options}) async {
     return source.delete(id, options: options);
   }
 
