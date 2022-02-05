@@ -100,7 +100,7 @@ class ODataSource {
     var params3 = params != null ? params.toString() : '';
     var querySep = params2.isNotEmpty || params3.isNotEmpty ? '?' : '';
     var paramsSep = params2.isNotEmpty && params3.isNotEmpty ? '&' : '';
-    return '$odataPrefix/$entity$id$querySep$params2$paramsSep$params3}';
+    return '$odataPrefix/$entity$id$querySep$params2$paramsSep$params3';
   }
 
   String _makeUrl1(String id) {
