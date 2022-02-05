@@ -28,10 +28,10 @@ class ODataResult<T> {
     this.raw,
   });
 
-  factory ODataResult.mapped(Map<String, dynamic> data, ODataMapper<T> mapper) {
+  factory ODataResult.mapped(Map<String, dynamic> data, ODataMap<T> map) {
     return ODataResult(
       context: data[ODATA_CONTEXT],
-      value: mapper(data),
+      value: map(data),
       count: data[ODATA_COUNT],
       keys: data[ODATA_KEYS] ?? const [],
       properties: data[ODATA_PROPERTIES] ?? const {},

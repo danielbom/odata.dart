@@ -7,7 +7,7 @@ import 'odata_exception.dart';
 import 'odata_requester.dart';
 import 'odata_params.dart';
 
-typedef ODataMapper<T> = T Function(Map<String, dynamic>);
+typedef ODataMap<T> = T Function(Map<String, dynamic>);
 
 class ODataSource {
   final String odataPrefix;
@@ -20,33 +20,33 @@ class ODataSource {
       this.odataPrefix = '/odata.v1'});
 
   Future<RequestOData<List<T>>> list<T>(
-      {ODataMapper<List<T>>? mapper,
+      {ODataMap<List<T>>? map,
       RequestOptions? options,
       Params? params,
       String? params1}) async {
     final url = _makeUrl(params1: params1, params: params);
     final request = await requester.httpGet(url, options);
-    return _mapODataResult(mapper, request);
+    return _mapODataResult(map, request);
   }
 
   Future<RequestOData<T>> getById<T>(String id,
-      {ODataMapper<T>? mapper,
+      {ODataMap<T>? map,
       RequestOptions? options,
       Params? params,
       String? params1}) async {
     final url = _makeUrl(id: id, params1: params1, params: params);
     final result = await requester.httpGet(url, options);
-    return _mapODataResult(mapper, result);
+    return _mapODataResult(map, result);
   }
 
   Future<RequestOData<T>> create<D, T>(D data,
-      {ODataMapper<T>? mapper,
+      {ODataMap<T>? map,
       RequestOptions? options,
       Params? params,
       String? params1}) async {
     final url = _makeUrl(params1: params1, params: params);
     final result = await requester.httpPost(url, data, options);
-    return _mapODataResult(mapper, result);
+    return _mapODataResult(map, result);
   }
 
   Future<RequestOData> update<D>(String id, D data,
@@ -70,13 +70,13 @@ class ODataSource {
   }
 
   RequestOData<T> _mapODataResult<T>(
-      ODataMapper<T>? mapper, RequestResult request) {
+      ODataMap<T>? map, RequestResult request) {
     return request.map((data) {
       final Map<String, dynamic> decodedData = jsonDecode(data!);
       if (ODataResult.isError(decodedData)) {
         throw ODataException.fromJson(decodedData);
-      } else if (mapper != null) {
-        return ODataResult.mapped(decodedData, mapper);
+      } else if (map != null) {
+        return ODataResult.mapped(decodedData, map);
       } else {
         return ODataResult.raw(decodedData);
       }
