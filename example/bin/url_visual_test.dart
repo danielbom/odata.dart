@@ -1,11 +1,6 @@
 import 'package:odata/odata.dart';
-import 'models/models.dart';
 import 'odata_manager.dart';
 import 'requester_fake.dart';
-
-List<Figure> figureMapper(Map<String, dynamic> data) {
-  return Figure.fromMany(ODataSource.getValueAsList(data));
-}
 
 Future urlVisualExample(
     {required ODataManager manager,
@@ -19,7 +14,7 @@ Future urlVisualExample(
 }
 
 Future urlVisualExamples() async {
-  final requester = RequesterFaker(baseUrl: 'http://localhost:5000');
+  final requester = RequesterFaker(baseUrl: 'http://localhost:5000', data: '');
   final manager = ODataManager(requester: requester);
 
   {

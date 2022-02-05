@@ -2,7 +2,7 @@ import 'package:odata/odata_source_mapped.dart';
 
 import 'models/figure.dart';
 
-class FigureMapper implements ODataSourceMapper<Figure> {
+class FigureMapper implements ODataMapper<Figure> {
   @override
   List<Figure> mapMany(List<Map<String, dynamic>> data) {
     return Figure.fromMany(data);
