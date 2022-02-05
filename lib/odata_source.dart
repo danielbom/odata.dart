@@ -101,11 +101,11 @@ class ODataSource {
 
   String _makeUrl({String id = '', Params? params, String? params1}) {
     if (id.isNotEmpty) id = '($id)';
-    return '$odataPrefix/$entity$id${params1 ?? ""}${_processParams(params)}';
-  }
-
-  String _processParams(Params? params) {
-    return params != null ? '?$params' : '';
+    var params2 = params1 ?? '';
+    var params3 = params != null ? params.toString() : '';
+    var querySep = params2.isNotEmpty || params3.isNotEmpty ? '?' : '';
+    var paramsSep = params2.isNotEmpty && params3.isNotEmpty ? '&' : '';
+    return '$odataPrefix/$entity$id$querySep$params2$paramsSep$params3}';
   }
 
   static List<Map<String, dynamic>> getValueAsList(Map<String, dynamic> data) {
