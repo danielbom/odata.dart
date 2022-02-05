@@ -1,4 +1,4 @@
-import 'package:odata/odata_source_mapped.dart';
+import 'package:odata/odata_mapper.dart';
 
 import 'models/figure.dart';
 

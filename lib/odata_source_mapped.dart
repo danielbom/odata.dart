@@ -4,13 +4,7 @@ import 'odata_result.dart';
 import 'odata_requester.dart';
 import 'odata_source.dart';
 import 'odata_params.dart';
-
-abstract class ODataMapper<T> {
-  const ODataMapper();
-
-  T mapOne(Map<String, dynamic> data);
-  List<T> mapMany(List<Map<String, dynamic>> data);
-}
+import 'odata_mapper.dart';
 
 class ODataSourceMapped<T> {
   final ODataSource source;
@@ -32,19 +26,19 @@ class ODataSourceMapped<T> {
   Future<RequestOData<List<T>>> list(
       {RequestOptions? options, Params? params, String? params1}) async {
     return source.list(
-        options: options, params: params, params1: params1, map: mapMany);
+        options: options, params: params, params1: params1, map: mapper.mapMany1);
   }
 
   Future<RequestOData<T>> getById(String id,
       {RequestOptions? options, Params? params, String? params1}) async {
     return source.getById(id,
-        options: options, params: params, params1: params1, map: mapOne1);
+        options: options, params: params, params1: params1, map: mapper.mapOne);
   }
 
   Future<RequestOData<T>> create<D>(D data,
       {RequestOptions? options, Params? params, String? params1}) async {
     return source.create(data,
-        options: options, params: params, params1: params1, map: mapOne1);
+        options: options, params: params, params1: params1, map: mapper.mapOne);
   }
 
   Future<RequestOData> update<D>(String id, D data,
@@ -59,17 +53,5 @@ class ODataSourceMapped<T> {
 
   Future<RequestOData> delete(String id, {RequestOptions? options}) async {
     return source.delete(id, options: options);
-  }
-
-  T mapOne(Map<String, dynamic> data) {
-    return mapper.mapOne(ODataSource.getValueAsMap(data));
-  }
-
-  T mapOne1(Map<String, dynamic> data) {
-    return mapper.mapOne(data);
-  }
-
-  List<T> mapMany(Map<String, dynamic> data) {
-    return mapper.mapMany(ODataSource.getValueAsList(data));
   }
 }
