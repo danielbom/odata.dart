@@ -1,6 +1,6 @@
 import 'package:odata/odata.dart';
 import 'odata_manager.dart';
-import 'requester_fake.dart';
+import '../../test/requester_fake.dart';
 
 Future urlVisualExample(
     {required ODataManager manager,
@@ -14,7 +14,8 @@ Future urlVisualExample(
 }
 
 Future urlVisualExamples() async {
-  final requester = RequesterFaker(baseUrl: 'http://localhost:5000', data: '');
+  final requester = RequesterFaker(
+      baseUrl: 'http://localhost:5000', data: {ODATA_CONTEXT: ''});
   final manager = ODataManager(requester: requester);
 
   {
