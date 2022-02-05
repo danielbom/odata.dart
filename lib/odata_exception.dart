@@ -33,6 +33,11 @@ class ODataException implements Exception {
 
   @override
   String toString() {
-    return 'ODataException Type: $type\nTraceId: $traceId\nStatus: $status\nTitle: $title\nDetail: $detail';
+    return 'ODataException'
+        '\n  title:   $title'
+        '\n  detail:  $detail'
+        '\n  status:  $status'
+        '\n  traceId: $traceId'
+        '\n  type:    $type';
   }
 }
